@@ -1,0 +1,181 @@
+body {
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: linear-gradient(125deg, #000000, #1a1a1a);
+    color: #ffffff;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Add this after body to create the animated background effect */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 35%, rgba(76, 175, 80, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 75% 44%, rgba(33, 150, 243, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 5% 85%, rgba(244, 67, 54, 0.15) 0%, transparent 50%);
+    animation: backgroundShift 15s ease infinite;
+    z-index: 0;
+}
+
+@keyframes backgroundShift {
+    0% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.2) rotate(5deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 2.5rem;
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    width: 90%;
+    max-width: 400px;
+}
+
+h1 {
+    font-weight: 600;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: #ffffff;
+}
+
+.timer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+}
+
+.timer-circle {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 50%;
+    padding: 3rem;
+    box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.timer-circle::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: rotateGradient 8s linear infinite;
+}
+
+@keyframes rotateGradient {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.timer {
+    position: relative;
+    z-index: 2;
+    font-size: 4.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(180deg, #ffffff, #a0a0a0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.colon {
+    animation: blink 1s infinite;
+    opacity: 1;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0.5;
+    }
+}
+
+#status-text {
+    font-size: 1.1rem;
+    margin-top: 1rem;
+    margin-bottom: 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.controls {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.controls button {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.controls button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+#start {
+    background-color: rgba(76, 175, 80, 0.2);
+    border-color: rgba(76, 175, 80, 0.3);
+}
+
+#start:hover {
+    background-color: rgba(76, 175, 80, 0.3);
+}
+
+#pause, #reset {
+    background-color: rgba(244, 67, 54, 0.2);
+    border-color: rgba(244, 67, 54, 0.3);
+}
+
+#pause:hover, #reset:hover {
+    background-color: rgba(244, 67, 54, 0.3);
+}
+
+#mode-toggle {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    width: 100%;
+    padding: 0.8rem;
+    background-color: rgba(33, 150, 243, 0.2);
+    color: white;
+    border: 1px solid rgba(33, 150, 243, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#mode-toggle:hover {
+    background-color: rgba(33, 150, 243, 0.3);
+    transform: translateY(-2px);
+} 
