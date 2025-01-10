@@ -1,6 +1,7 @@
 let timeLeft;
 let timerId = null;
 let isWorkSession = true;
+let lastTime = Date.now();
 
 const minutesDisplay = document.getElementById('minutes');
 const secondsDisplay = document.getElementById('seconds');
@@ -16,8 +17,30 @@ const BREAK_TIME = 5 * 60; // 5 minutes in seconds
 function updateDisplay() {
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
+    const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    
+    // Update displays
     minutesDisplay.textContent = minutes.toString().padStart(2, '0');
     secondsDisplay.textContent = seconds.toString().padStart(2, '0');
+    
+    // Update page title
+    document.title = `${timeString} - ${isWorkSession ? 'Work' : 'Break'}`;
+}
+
+function updateAnalogClock() {
+    const minutesHand = document.querySelector('.minutes-hand');
+    const secondsHand = document.querySelector('.seconds-hand');
+    
+    const totalSeconds = WORK_TIME - timeLeft;
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    
+    // Calculate rotation angles
+    const minutesDegrees = ((minutes / (isWorkSession ? 25 : 5)) * 360) + ((seconds/60)*360/25);
+    const secondsDegrees = (seconds / 60) * 360;
+    
+    minutesHand.style.transform = `rotate(${minutesDegrees}deg)`;
+    secondsHand.style.transform = `rotate(${secondsDegrees}deg)`;
 }
 
 function startTimer() {
@@ -25,9 +48,17 @@ function startTimer() {
         if (!timeLeft) {
             timeLeft = WORK_TIME;
         }
+        lastTime = Date.now();
         timerId = setInterval(() => {
-            timeLeft--;
+            // Calculate actual elapsed time
+            const currentTime = Date.now();
+            const deltaTime = Math.floor((currentTime - lastTime) / 1000);
+            lastTime = currentTime;
+            
+            // Update timer by actual elapsed time
+            timeLeft = Math.max(0, timeLeft - deltaTime);
             updateDisplay();
+            updateAnalogClock();
             
             if (timeLeft === 0) {
                 clearInterval(timerId);
@@ -54,6 +85,7 @@ function resetTimer() {
     timeLeft = WORK_TIME;
     statusText.textContent = "Time to focus!";
     updateDisplay();
+    updateAnalogClock();
 }
 
 function toggleMode() {
@@ -62,6 +94,7 @@ function toggleMode() {
     statusText.textContent = isWorkSession ? "Time to focus!" : "Take a break!";
     modeToggleButton.textContent = isWorkSession ? "Switch to Rest" : "Switch to Work";
     updateDisplay();
+    updateAnalogClock();
 }
 
 startButton.addEventListener('click', startTimer);
@@ -77,4 +110,5 @@ modeToggleButton.addEventListener('click', () => {
 
 // Initialize the display
 timeLeft = WORK_TIME;
-updateDisplay(); 
+updateDisplay();
+updateAnalogClock(); 
